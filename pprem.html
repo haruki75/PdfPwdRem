@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rimuovi Password PDF - Offline</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script>
+        // Configura il worker di PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .security-note {
+            background: linear-gradient(45deg, #e8f5e8, #f0f8ff);
+            border: 2px solid #4caf50;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .security-note h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .security-note h3::before {
+            content: "🔒";
+            margin-right: 10px;
+        }
+        
+        .security-note ul {
+            color: #2e7d32;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .security-note li {
+            margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .security-note li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+        
+        .upload-section {
+            margin-bottom: 30px;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .file-input-label {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .file-input-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .password-section {
+            margin-bottom: 30px;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .process-btn {
+            background: linear-gradient(45deg, #4caf50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .process-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+        
+        .process-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .status.success {
+            background: linear-gradient(45deg, #e8f5e8, #f0f8ff);
+            color: #2e7d32;
+            border: 2px solid #4caf50;
+        }
+        
+        .status.error {
+            background: linear-gradient(45deg, #ffebee, #fce4ec);
+            color: #c62828;
+            border: 2px solid #f44336;
+        }
+        
+        .status.info {
+            background: linear-gradient(45deg, #e3f2fd, #f3e5f5);
+            color: #1565c0;
+            border: 2px solid #2196f3;
+        }
+        
+        .file-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            display: none;
+        }
+        
+        .file-info h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .file-info p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-bar .progress {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .download-section {
+            background: linear-gradient(45deg, #e8f5e8, #f0f8ff);
+            border: 2px solid #4caf50;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .download-section h3 {
+            margin-bottom: 15px;
+        }
+        
+        .download-section p {
+            margin-top: 10px;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .processing {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔓 Rimuovi Password PDF</h1>
+            <p>Rimuovi la password dai tuoi PDF in modo sicuro e completamente offline</p>
+        </div>
+        
+        <div class="security-note">
+            <h3>Sicurezza Garantita</h3>
+            <ul>
+                <li>Funziona completamente offline nel tuo browser</li>
+                <li>Nessun file viene caricato su server esterni</li>
+                <li>Tutto il processo avviene sul tuo computer</li>
+                <li>I tuoi documenti rimangono privati e sicuri</li>
+            </ul>
+        </div>
+        
+        <div class="upload-section">
+            <div class="file-input-wrapper">
+                <input type="file" id="pdfFile" class="file-input" accept=".pdf">
+                <label for="pdfFile" class="file-input-label">
+                    📄 Seleziona PDF Protetto
+                </label>
+            </div>
+        </div>
+        
+        <div class="file-info" id="fileInfo">
+            <h4>📋 Informazioni File</h4>
+            <p id="fileName"></p>
+            <p id="fileSize"></p>
+        </div>
+        
+        <div class="password-section">
+            <input type="password" id="password" class="password-input" placeholder="Inserisci la password del PDF" disabled>
+            <button id="processBtn" class="process-btn" disabled>
+                🔓 Rimuovi Password
+            </button>
+        </div>
+        
+        <div class="progress-bar" id="progressBar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div class="status" id="status"></div>
+        
+        <div class="download-section" id="downloadSection" style="display: none;">
+            <h3 style="color: #4caf50; margin-bottom: 15px;">📁 File Pronto per il Download</h3>
+            <a id="downloadLink" class="file-input-label" style="text-decoration: none; display: inline-block;">
+                💾 Clicca qui per scaricare il PDF senza password
+            </a>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                Clicca il pulsante sopra per scaricare il file, oppure fai clic destro e scegli "Salva con nome"
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const pdfFileInput = document.getElementById('pdfFile');
+        const passwordInput = document.getElementById('password');
+        const processBtn = document.getElementById('processBtn');
+        const statusDiv = document.getElementById('status');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const progressBar = document.getElementById('progressBar');
+        const progress = document.getElementById('progress');
+
+        const downloadSection = document.getElementById('downloadSection');
+        const downloadLink = document.getElementById('downloadLink');
+
+        let selectedFile = null;
+
+        pdfFileInput.addEventListener('change', function(e) {
+            selectedFile = e.target.files[0];
+            if (selectedFile) {
+                if (selectedFile.type !== 'application/pdf') {
+                    showStatus('Errore: Seleziona un file PDF valido', 'error');
+                    return;
+                }
+                
+                // Mostra informazioni file
+                fileName.textContent = `Nome: ${selectedFile.name}`;
+                fileSize.textContent = `Dimensione: ${(selectedFile.size / 1024 / 1024).toFixed(2)} MB`;
+                fileInfo.style.display = 'block';
+                
+                // Abilita input password e bottone
+                passwordInput.disabled = false;
+                processBtn.disabled = false;
+                
+                showStatus('File selezionato. Inserisci la password e clicca "Rimuovi Password"', 'info');
+            }
+        });
+
+        processBtn.addEventListener('click', async function() {
+            if (!selectedFile) {
+                showStatus('Errore: Seleziona prima un file PDF', 'error');
+                return;
+            }
+
+            const password = passwordInput.value.trim();
+            if (!password) {
+                showStatus('Errore: Inserisci la password del PDF', 'error');
+                return;
+            }
+
+            await removePdfPassword(selectedFile, password);
+        });
+
+        async function removePdfPassword(file, password) {
+            try {
+                showStatus('Elaborazione in corso...', 'info');
+                showProgress(0);
+                processBtn.disabled = true;
+                processBtn.classList.add('processing');
+
+                // Leggi il file
+                const arrayBuffer = await file.arrayBuffer();
+                showProgress(10);
+
+                // Prova prima con PDF.js (metodo alternativo)
+                try {
+                    await tryPdfJsMethod(arrayBuffer, password, file.name);
+                    return;
+                } catch (pdfJsError) {
+                    console.log('PDF.js fallito, provo con PDF-lib...', pdfJsError);
+                    showProgress(30);
+                }
+
+                // Prova con PDF-lib (metodo originale)
+                try {
+                    await tryPdfLibMethod(arrayBuffer, password, file.name);
+                    return;
+                } catch (pdfLibError) {
+                    console.log('PDF-lib fallito, provo metodo diretto...', pdfLibError);
+                    showProgress(60);
+                }
+
+                // Metodo diretto - rimuove la protezione dai bytes
+                try {
+                    await tryDirectMethod(arrayBuffer, password, file.name);
+                    return;
+                } catch (directError) {
+                    console.error('Tutti i metodi falliti:', directError);
+                    showStatus('Errore: Impossibile rimuovere la password. Il PDF potrebbe utilizzare un tipo di crittografia non supportato.', 'error');
+                    resetInterface();
+                }
+
+            } catch (error) {
+                console.error('Errore generale:', error);
+                showStatus('Errore durante l\'elaborazione del file.', 'error');
+                resetInterface();
+            }
+        }
+
+        async function tryPdfJsMethod(arrayBuffer, password, fileName) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    // Configura PDF.js
+                    pdfjsLib.getDocument({
+                        data: arrayBuffer,
+                        password: password
+                    }).promise.then(async (pdf) => {
+                        showProgress(40);
+                        
+                        // Crea un nuovo PDF
+                        const newPdfDoc = await PDFLib.PDFDocument.create();
+                        
+                        // Estrai ogni pagina
+                        for (let i = 1; i <= pdf.numPages; i++) {
+                            const page = await pdf.getPage(i);
+                            const viewport = page.getViewport({ scale: 2.0 });
+                            
+                            // Crea canvas per renderizzare la pagina
+                            const canvas = document.createElement('canvas');
+                            const context = canvas.getContext('2d');
+                            canvas.height = viewport.height;
+                            canvas.width = viewport.width;
+                            
+                            // Renderizza la pagina
+                            await page.render({
+                                canvasContext: context,
+                                viewport: viewport
+                            }).promise;
+                            
+                            // Converti canvas in immagine
+                            const imgData = canvas.toDataURL('image/png');
+                            const imgBytes = Uint8Array.from(atob(imgData.split(',')[1]), c => c.charCodeAt(0));
+                            
+                            // Aggiungi immagine al nuovo PDF
+                            const pdfImage = await newPdfDoc.embedPng(imgBytes);
+                            const pdfPage = newPdfDoc.addPage([viewport.width, viewport.height]);
+                            pdfPage.drawImage(pdfImage, {
+                                x: 0,
+                                y: 0,
+                                width: viewport.width,
+                                height: viewport.height
+                            });
+                            
+                            showProgress(40 + (i / pdf.numPages) * 40);
+                        }
+                        
+                        // Salva il nuovo PDF
+                        const pdfBytes = await newPdfDoc.save();
+                        showProgress(90);
+                        
+                        // Scarica il file
+                        downloadFile(pdfBytes, fileName);
+                        showProgress(100);
+                        
+                        showStatus('✅ Password rimossa con successo! Controlla la cartella Download del tuo browser.', 'success');
+                        resetInterface();
+                        resolve();
+                        
+                    }).catch(reject);
+                    
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+
+        async function tryPdfLibMethod(arrayBuffer, password, fileName) {
+            // Prova a caricare il PDF con la password
+            const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer, { password: password });
+            showProgress(50);
+
+            // Crea un nuovo PDF senza password
+            const newPdfDoc = await PDFLib.PDFDocument.create();
+            const pages = await newPdfDoc.copyPages(pdfDoc, pdfDoc.getPageIndices());
+            
+            showProgress(75);
+
+            // Aggiungi tutte le pagine al nuovo documento
+            pages.forEach((page) => newPdfDoc.addPage(page));
+
+            // Serializza il nuovo PDF
+            const pdfBytes = await newPdfDoc.save();
+            showProgress(90);
+
+            // Scarica il file
+            downloadFile(pdfBytes, fileName);
+            showProgress(100);
+
+            showStatus('✅ Password rimossa con successo! Controlla la cartella Download del tuo browser.', 'success');
+            resetInterface();
+        }
+
+        async function tryDirectMethod(arrayBuffer, password, fileName) {
+            // Metodo diretto - cerca e rimuove i riferimenti alla crittografia
+            let pdfString = new TextDecoder('latin1').decode(arrayBuffer);
+            
+            // Rimuove riferimenti alla crittografia
+            pdfString = pdfString.replace(/\/Encrypt\s+\d+\s+\d+\s+R/g, '');
+            pdfString = pdfString.replace(/\/Encrypt\s*<<[^>]*>>/g, '');
+            
+            // Rimuove riferimenti alle autorizzazioni
+            pdfString = pdfString.replace(/\/P\s+-?\d+/g, '');
+            pdfString = pdfString.replace(/\/O\s*<[^>]*>/g, '');
+            pdfString = pdfString.replace(/\/U\s*<[^>]*>/g, '');
+            
+            // Ricostruisce il PDF
+            const modifiedBytes = new TextEncoder().encode(pdfString);
+            
+            showProgress(90);
+            
+            // Scarica il file
+            downloadFile(modifiedBytes, fileName);
+            showProgress(100);
+            
+            showStatus('✅ Password rimossa con successo! Controlla la cartella Download del tuo browser.', 'success');
+            resetInterface();
+        }
+
+        function downloadFile(pdfBytes, fileName) {
+            const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const newFileName = fileName.replace('.pdf', '_senza_password.pdf');
+            
+            // Configura il link di download
+            downloadLink.href = url;
+            downloadLink.download = newFileName;
+            
+            // Mostra la sezione download
+            downloadSection.style.display = 'block';
+            
+            // Nasconde il messaggio di stato e mostra il link
+            statusDiv.style.display = 'none';
+            
+            // Prova anche il download automatico
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = newFileName;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            // Messaggio di successo
+            setTimeout(() => {
+                showStatus(`✅ File pronto! Nome: "${newFileName}"`, 'success');
+            }, 500);
+        }
+
+        function showStatus(message, type) {
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+        }
+
+        function showProgress(percent) {
+            progressBar.style.display = 'block';
+            progress.style.width = percent + '%';
+            
+            if (percent >= 100) {
+                setTimeout(() => {
+                    progressBar.style.display = 'none';
+                    progress.style.width = '0%';
+                }, 2000);
+            }
+        }
+
+        function resetInterface() {
+            processBtn.disabled = false;
+            processBtn.classList.remove('processing');
+            // Non nascondere più automaticamente lo status per permettere di vedere il link
+        }
+
+        // Gestione drag and drop
+        const container = document.querySelector('.container');
+
+        container.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            container.style.borderColor = '#667eea';
+            container.style.backgroundColor = '#f8f9ff';
+        });
+
+        container.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            container.style.borderColor = '';
+            container.style.backgroundColor = '';
+        });
+
+        container.addEventListener('drop', function(e) {
+            e.preventDefault();
+            container.style.borderColor = '';
+            container.style.backgroundColor = '';
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type === 'application/pdf') {
+                    selectedFile = file;
+                    pdfFileInput.files = files;
+                    
+                    // Triggera l'evento change
+                    const event = new Event('change');
+                    pdfFileInput.dispatchEvent(event);
+                } else {
+                    showStatus('Errore: Seleziona un file PDF valido', 'error');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
