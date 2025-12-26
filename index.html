@@ -24,6 +24,15 @@
     document.getElementById('openBtn').addEventListener('click', () => {
       // Apri in nuova scheda in modo sicuro
       window.open(url, '_blank', 'noopener,noreferrer');
+  <div class="wrap">
+    <button class="btn" id="openBtn" aria-label="Piano CSIRT">Consulta piano CSIRT</button>
+  </div>
+
+  <script>
+    const url = 'https://haruki75.github.io/PdfPwdRem/plan.html';
+    document.getElementById('openBtn').addEventListener('click', () => {
+      // Apri in nuova scheda in modo sicuro
+      window.open(url, '_blank', 'noopener,noreferrer');
     });
 
     // Permetti anche apertura via Enter quando il bottone è a fuoco
