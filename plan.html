@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piano di Tutela Referente CSIRT</title>
+    <style>
+        @media print {
+            body { margin: 0; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20mm;
+            background: #f5f5f5;
+        }
+        .document {
+            background: white;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a5490;
+            border-bottom: 3px solid #1a5490;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h2 {
+            color: #2c5f8d;
+            margin-top: 30px;
+            border-left: 4px solid #2c5f8d;
+            padding-left: 15px;
+        }
+        h3 {
+            color: #3d7099;
+            margin-top: 20px;
+        }
+        .header-info {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .important-box {
+            background: #f8d7da;
+            border-left: 5px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .success-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        ul {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist li:before {
+            content: "☐ ";
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+        .principle {
+            background: #f0f0f0;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        .button {
+            background: #1a5490;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .button:hover {
+            background: #2c5f8d;
+        }
+        .no-print {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print">
+        <button class="button" onclick="window.print()">🖨️ Stampa/Salva PDF</button>
+        <button class="button" onclick="downloadHTML()">💾 Scarica HTML</button>
+    </div>
+
+    <div class="document">
+        <h1>PIANO DI TUTELA DEL REFERENTE CSIRT</h1>
+        
+        <div class="header-info">
+            <strong>Documento per:</strong> Giulio Ravazzolo - Referente CSIRT<br>
+            <strong>Azienda:</strong> SIAV SPA<br>
+            <strong>Normativa di riferimento:</strong> Direttiva NIS2 (UE) 2022/2555<br>
+            <strong>Tipologia soggetto:</strong> Essenziale<br>
+            <strong>Data documento:</strong> <span id="current-date"></span>
+        </div>
+
+        <div class="important-box">
+            <strong>⚠️ PREMESSA FONDAMENTALE</strong><br>
+            Il presente documento costituisce una guida operativa per la tutela della responsabilità personale del Referente CSIRT attraverso la corretta documentazione delle attività, delle segnalazioni e delle eventuali carenze organizzative. Ogni azione qui descritta ha lo scopo di creare evidenza documentale dell'adempimento degli obblighi di diligenza.
+        </div>
+
+        <h2>1. MAPPATURA INIZIALE E ANALISI DEI RISCHI</h2>
+        
+        <h3>1.1 Relazione Iniziale alla Direzione</h3>
+        <p><strong>Destinatario:</strong> Dott. Nicola Voltan (Amministratore Delegato)</p>
+        <p><strong>Contenuti essenziali:</strong></p>
+        <ul>
+            <li>Ricognizione dello stato attuale della sicurezza informatica aziendale</li>
+            <li>Identificazione delle risorse (umane, tecniche, economiche) attualmente disponibili</li>
+            <li>Elenco delle carenze infrastrutturali e organizzative riscontrate</li>
+            <li>Valutazione preliminare dei gap rispetto agli obblighi NIS2</li>
+            <li>Richiesta formale delle risorse necessarie per l'adempimento del mandato</li>
+            <li>Proposta di tempistiche per le verifiche iniziali</li>
+        </ul>
+        
+        <div class="success-box">
+            <strong>✓ Obiettivo di tutela:</strong> Documentare fin da subito eventuali carenze preesistenti e mezzi insufficienti, creando evidenza che precede qualsiasi eventuale incidente.
+        </div>
+
+        <div class="page-break"></div>
+
+        <h2>2. COMUNICAZIONI FORMALI AI REPARTI AZIENDALI</h2>
+
+        <h3>2.1 Verso il Reparto IT/Sistemi Informativi</h3>
+        <p><strong>Tipo comunicazione:</strong> Email formale con richiesta di riscontro scritto</p>
+        <ul class="checklist">
+            <li>Richiesta di accesso completo a sistemi, log, configurazioni di sicurezza, documentazione tecnica</li>
+            <li>Definizione delle procedure di escalation in caso di incidente</li>
+            <li>Richiesta di reportistica periodica sullo stato della sicurezza (settimanale/mensile)</li>
+            <li>Identificazione di referenti tecnici dedicati con ruoli e responsabilità definite</li>
+            <li>Segnalazione di eventuali limitazioni tecniche, strumenti mancanti o obsoleti</li>
+            <li>Richiesta inventario completo asset IT critici</li>
+            <li>Verifica esistenza e adeguatezza di sistemi di backup</li>
+        </ul>
+
+        <h3>2.2 Verso il Reparto HR/Risorse Umane</h3>
+        <p><strong>Tipo comunicazione:</strong> Email formale con piano di formazione allegato</p>
+        <ul class="checklist">
+            <li>Pianificazione programmi di formazione obbligatoria sulla cybersecurity per tutto il personale</li>
+            <li>Definizione procedure di onboarding/offboarding dal punto di vista della sicurezza</li>
+            <li>Richiesta supporto per campagne di awareness periodiche</li>
+            <li>Ottenimento elenco aggiornato del personale con accessi a sistemi critici</li>
+            <li>Definizione di clausole di sicurezza nei contratti di lavoro</li>
+            <li>Gestione degli accessi in caso di trasferimenti interni</li>
+        </ul>
+
+        <h3>2.3 Verso Legal/Compliance</h3>
+        <p><strong>Tipo comunicazione:</strong> Email formale con richiesta di incontro di coordinamento</p>
+        <ul class="checklist">
+            <li>Coordinamento per gli adempimenti normativi NIS2</li>
+            <li>Definizione procedure di notifica agli enti (CSIRT Italia, ACN)</li>
+            <li>Allineamento delle policy di sicurezza con il quadro normativo vigente</li>
+            <li>Richiesta supporto per la redazione di procedure formali e policy aziendali</li>
+            <li>Verifica conformità contrattuale con fornitori e partner</li>
+            <li>Gestione aspetti legali in caso di incidenti</li>
+        </ul>
+
+        <h3>2.4 Verso il DPO (Data Protection Officer)</h3>
+        <p><strong>Tipo comunicazione:</strong> Email formale di coordinamento</p>
+        <ul class="checklist">
+            <li>Coordinamento nella gestione di incidenti che coinvolgano data breach</li>
+            <li>Allineamento degli obblighi GDPR con quelli NIS2</li>
+            <li>Definizione procedure comuni di notifica e tempistiche</li>
+            <li>Condivisione registro trattamenti vs asset critici</li>
+            <li>Coordinamento per valutazioni di impatto (DPIA)</li>
+        </ul>
+
+        <h3>2.5 Verso Procurement/Acquisti</h3>
+        <p><strong>Tipo comunicazione:</strong> Email formale con elenco necessità</p>
+        <ul class="checklist">
+            <li>Segnalazione necessità di strumenti di sicurezza (SIEM, EDR, antivirus, firewall, IDS/IPS, backup avanzati, etc.)</li>
+            <li>Richiesta valutazione dei fornitori critici dal punto di vista cybersecurity</li>
+            <li>Definizione requisiti di sicurezza obbligatori per nuovi contratti</li>
+            <li>Implementazione clausole di sicurezza negli accordi con terze parti</li>
+            <li>Verifica conformità fornitori cloud e servizi gestiti</li>
+        </ul>
+
+        <h3>2.6 Verso Risk Management</h3>
+        <p><strong>Tipo comunicazione:</strong> Email formale di coordinamento</p>
+        <ul class="checklist">
+            <li>Integrazione dei rischi cyber nel framework aziendale di risk management</li>
+            <li>Condivisione matrice di rischio e classificazione incidenti</li>
+            <li>Coordinamento per valutazioni di rischio periodiche</li>
+            <li>Allineamento con eventuali polizze assicurative cyber</li>
+        </ul>
+
+        <div class="page-break"></div>
+
+        <h2>3. SISTEMA DI REPORTISTICA E DOCUMENTAZIONE</h2>
+
+        <h3>3.1 Report Mensile alla Direzione</h3>
+        <p><strong>Frequenza:</strong> Mensile (entro il 5° giorno lavorativo del mese successivo)</p>
+        <p><strong>Destinatari:</strong> AD, Direzione, eventuali organi di governance</p>
+        <p><strong>Contenuti minimi:</strong></p>
+        <ul>
+            <li>Executive summary dello stato della sicurezza</li>
+            <li>Stato delle iniziative di sicurezza in corso</li>
+            <li>Incidenti rilevati e gestiti nel periodo (anche se di bassa criticità)</li>
+            <li>Criticità emerse e non risolte con relative raccomandazioni</li>
+            <li>Risorse richieste e non ottenute (con impatto sulla sicurezza)</li>
+            <li>Raccomandazioni per miglioramenti e investimenti</li>
+            <li>Indicatori di sicurezza (KPI/KRI se disponibili)</li>
+            <li>Stato di avanzamento della conformità NIS2</li>
+        </ul>
+
+        <div class="warning-box">
+            <strong>⚠️ IMPORTANTE:</strong> Conservare copia di ogni report inviato con evidenza di consegna (ricevuta email, PEC, protocollo interno). In caso di mancato feedback su criticità segnalate, inviare sollecito scritto dopo 15 giorni.
+        </div>
+
+        <h3>3.2 Registro degli Incidenti</h3>
+        <p><strong>Formato:</strong> Database/foglio strutturato con campi standardizzati</p>
+        <p><strong>Informazioni da registrare per ogni incidente:</strong></p>
+        <ul>
+            <li>Data e ora di rilevazione</li>
+            <li>Tipologia e classificazione dell'incidente (secondo matrice aziendale)</li>
+            <li>Sistemi/asset coinvolti</li>
+            <li>Impatto stimato e reale</li>
+            <li>Azioni intraprese con tempistiche</li>
+            <li>Risorse richieste per la gestione</li>
+            <li>Eventuali ritardi o impossibilità di azione dovuti a carenze organizzative</li>
+            <li>Personale coinvolto nella gestione</li>
+            <li>Notifiche effettuate (interne ed esterne)</li>
+            <li>Lezioni apprese e raccomandazioni</li>
+            <li>Stato di chiusura e validazione</li>
+        </ul>
+
+        <h3>3.3 Registro delle Segnalazioni alla Direzione</h3>
+        <p>Mantieni un registro separato di tutte le segnalazioni formali inviate alla Direzione contenente:</p>
+        <ul>
+            <li>Data della segnalazione</li>
+            <li>Oggetto/criticità segnalata</li>
+            <li>Livello di rischio associato</li>
+            <li>Raccomandazioni fornite</li>
+            <li>Risposta ricevuta (con data)</li>
+            <li>Azioni conseguenti</li>
+            <li>Stato attuale della criticità</li>
+        </ul>
+
+        <div class="page-break"></div>
+
+        <h2>4. FORMALIZZAZIONE DELLE PROCEDURE</h2>
+
+        <h3>4.1 Documenti da Redigere e Far Approvare</h3>
+
+        <div class="warning-box">
+            <strong>Procedura operativa fondamentale:</strong> Tutti i documenti procedurali devono essere approvati formalmente dalla Direzione con firma o protocollo. Senza approvazione formale, richiedere per iscritto se operare comunque o attendere.
+        </div>
+
+        <ul class="checklist">
+            <li><strong>Procedura di Gestione Incidenti di Sicurezza:</strong> include classificazione, escalation, contenimento, eradicazione, recupero, post-incident review</li>
+            <li><strong>Matrice di Escalation e Responsabilità:</strong> chi fa cosa, quando e come in caso di incidente</li>
+            <li><strong>Procedura di Notifica a CSIRT Italia e ACN:</strong> tempistiche, contenuti, responsabilità, modelli di comunicazione</li>
+            <li><strong>Policy di Classificazione degli Incidenti:</strong> criteri di severità, impatto, priorità</li>
+            <li><strong>Procedura di Gestione Vulnerabilità:</strong> discovery, assessment, prioritizzazione, remediation, verifica</li>
+            <li><strong>Policy di Accesso e Gestione Identità:</strong> in coordinamento con IT</li>
+            <li><strong>Procedura di Security Awareness:</strong> formazione, test, comunicazioni</li>
+            <li><strong>Policy di Gestione Fornitori:</strong> valutazione, monitoraggio, audit</li>
+        </ul>
+
+        <h3>4.2 Piani di Continuità e Disaster Recovery</h3>
+        <p><strong>Verifica l'esistenza e richiedere per iscritto:</strong></p>
+        <ul>
+            <li>Business Continuity Plan (BCP) aggiornato</li>
+            <li>Disaster Recovery Plan (DRP) con RTO e RPO definiti</li>
+            <li>Procedure di backup e ripristino documentate e testate</li>
+            <li>Test periodici dei piani (almeno annuali) con documentazione dei risultati</li>
+            <li>Identificazione di siti alternativi o soluzioni di failover</li>
+            <li>Accordi con fornitori critici per la continuità</li>
+        </ul>
+
+        <div class="important-box">
+            <strong>SE INESISTENTI O INADEGUATI:</strong> Segnalare formalmente alla Direzione con comunicazione scritta evidenziando i rischi e richiedendo piano di implementazione con tempistiche. Documentare la risposta ricevuta.
+        </div>
+
+        <h2>5. TUTELA DOCUMENTALE CONTINUA</h2>
+
+        <h3>5.1 Archivio Strutturato da Mantenere</h3>
+        <p>Crea e mantieni un archivio digitale organizzato (suggerimento: cartelle su cloud personale + backup locale) contenente:</p>
+
+        <ol>
+            <li><strong>Cartella "Comunicazioni Inviate"</strong>
+                <ul>
+                    <li>Organizzata per destinatario e anno/mese</li>
+                    <li>Include ricevute di lettura quando possibile</li>
+                    <li>PDF delle email inviate</li>
+                </ul>
+            </li>
+            <li><strong>Cartella "Segnalazioni di Criticità"</strong>
+                <ul>
+                    <li>Organizzata per tipologia di criticità</li>
+                    <li>Include eventuali solleciti inviati</li>
+                    <li>Risposte ricevute</li>
+                </ul>
+            </li>
+            <li><strong>Cartella "Raccomandazioni e Proposte"</strong>
+                <ul>
+                    <li>Tutte le raccomandazioni tecniche fornite</li>
+                    <li>Proposte di investimento in sicurezza</li>
+                    <li>Esito dato a ciascuna proposta</li>
+                </ul>
+            </li>
+            <li><strong>Cartella "Rifiuti e Ritardi"</strong>
+                <ul>
+                    <li>Documentazione di rifiuti nell'implementazione di misure richieste</li>
+                    <li>Ritardi nella fornitura di risorse</li>
+                    <li>Carenze organizzative segnalate e non risolte</li>
+                </ul>
+            </li>
+            <li><strong>Cartella "Richieste di Risorse"</strong>
+                <ul>
+                    <li>Budget richiesti</li>
+                    <li>Personale aggiuntivo richiesto</li>
+                    <li>Strumenti e tecnologie richieste</li>
+                    <li>Risposte ricevute</li>
+                </ul>
+            </li>
+            <li><strong>Cartella "Report Periodici"</strong>
+                <ul>
+                    <li>Tutti i report mensili inviati</li>
+                    <li>Report straordinari</li>
+                    <li>Feedback ricevuti</li>
+                </ul>
+            </li>
+            <li><strong>Cartella "Incidenti"</strong>
+                <ul>
+                    <li>Sottocartelle per ogni incidente significativo</li>
+                    <li>Tutta la documentazione relativa</li>
+                    <li>Comunicazioni interne ed esterne</li>
+                </ul>
+            </li>
+            <li><strong>Cartella "Procedure e Policy"</strong>
+                <ul>
+                    <li>Versioni approvate con firma/protocollo</li>
+                    <li>Storico delle versioni</li>
+                    <li>Comunicazioni di adozione</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3>5.2 Modalità Operative per la Tutela</h3>
+        
+        <div class="principle">
+            <strong>1. USA SEMPRE COMUNICAZIONI EMAIL TRACCIABILI</strong><br>
+            Evita comunicazioni verbali per argomenti rilevanti. Se avviene una discussione verbale importante, invia sempre email di riepilogo: "Come da ns. conversazione di oggi..."
+        </div>
+
+        <div class="principle">
+            <strong>2. RICHIEDI RISCONTRO SCRITTO ESPLICITO</strong><br>
+            Per questioni critiche, aggiungi: "Si prega di fornire riscontro scritto entro [data]". Se non arriva, invia sollecito.
+        </div>
+
+        <div class="principle">
+            <strong>3. CONSERVA COPIE DI BACKUP</strong><br>
+            Mantieni copie della documentazione in almeno due luoghi: sistema aziendale + archivio personale (cloud privato + disco esterno).
+        </div>
+
+        <div class="principle">
+            <strong>4. USA PEC PER COMUNICAZIONI CRITICHE</strong><br>
+            Per segnalazioni di criticità gravi o rifiuti di implementare misure essenziali, valuta l'uso di PEC verso la Direzione per valore legale.
+        </div>
+
+        <div class="principle">
+            <strong>5. DOCUMENTA ANCHE LE AZIONI POSITIVE</strong><br>
+            Non solo le criticità: documenta anche gli investimenti fatti, le misure implementate, i successi. Serve a dimostrare la diligenza e il miglioramento continuo.
+        </div>
+
+        <div class="page-break"></div>
+
+        <h2>6. FORMAZIONE E SENSIBILIZZAZIONE</h2>
+
+        <h3>6.1 Piano di Security Awareness</h3>
+        <p><strong>Proponi per iscritto alla Direzione e HR:</strong></p>
+        <ul>
+            <li>Calendario annuale di sessioni formative obbligatorie per tutto il personale (almeno 2-4 ore/anno)</li>
+            <li>Workshop specifici per responsabili di reparto e middle management</li>
+            <li>Simulazioni periodiche di incidenti di sicurezza (tabletop exercise)</li>
+            <li>Campagne di phishing simulato con monitoraggio tassi di click</li>
+            <li>Newsletter periodica sulla sicurezza (mensile/trimestrale)</li>
+            <li>Materiale informativo (poster, infografiche, promemoria)</li>
+            <li>Onboarding specifico sulla sicurezza per nuovi assunti</li>
+        </ul>
+
+        <div class="important-box">
+            <strong>SE LA PROPOSTA NON VIENE ACCOLTA O FINANZIATA:</strong> Documentare formalmente il rifiuto, evidenziare i rischi connessi alla mancata formazione del personale (es. maggiore suscettibilità al phishing), conservare la documentazione. Riproporre periodicamente (es. ogni 6 mesi).
+        </div>
+
+        <h3>6.2 Formazione Specialistica per il CSIRT</h3>
+        <p>Richiedi per te e per eventuali collaboratori del CSIRT:</p>
+        <ul>
+            <li>Corsi di aggiornamento su NIS2 e normativa cyber</li>
+            <li>Certificazioni tecniche (es. CEH, CISSP, CISM, ISO 27001 Lead Auditor)</li>
+            <li>Partecipazione a conferenze e workshop di settore</li>
+            <li>Abbonamenti a threat intelligence feed</li>
+            <li>Formazione su strumenti specifici adottati</li>
+        </ul>
+
+        <h2>7. VERIFICHE PERIODICHE E AUDIT</h2>
+
+        <h3>7.1 Attività di Verifica da Richiedere Formalmente</h3>
+        
+        <ul class="checklist">
+            <li><strong>Audit di Sicurezza Periodici:</strong> Almeno annuali, anche tramite consulenti esterni indipendenti</li>
+            <li><strong>Vulnerability Assessment:</strong> Scansioni periodiche (almeno trimestrali) di tutti i sistemi esposti</li>
+            <li><strong>Penetration Test:</strong> Annuali su perimetro esterno e, periodicamente, su sistemi interni critici</li>
+            <li><strong>Revisione Configurazioni di Sicurezza:</strong> Semestrale su firewall, sistemi, applicazioni critiche</li>
+            <li><strong>Verifica Efficacia Backup:</strong> Test di ripristino almeno semestrali</li>
+            <li><strong>Audit sui Log:</strong> Verifica che i log vengano raccolti, conservati e analizzati correttamente</li>
+            <li><strong>Verifica Conformità NIS2:</strong> Gap analysis periodica con piano di remediation</li>
+            <li><strong>Audit sui Fornitori Critici:</strong> Verifica annuale della sicurezza di fornitori essenziali</li>
+        </ul>
+
+        <div class="important-box">
+            <strong>DOCUMENTARE SE QUESTE ATTIVITÀ:</strong>
+            <ul>
+                <li>Vengono rifiutate → segnalare formalmente i rischi</li>
+                <li>Vengono rimandate per carenza di budget → richiedere allocazione fondi e timeline</li>
+                <li>Evidenziano criticità → segnalare alla Direzione con priorità e timeline raccomandate per remediation</li>
+                <li>Vengono svolte → conservare i report e tracciare l'implementazione delle raccomandazioni</li>
+            </ul>
+        </div>
+
+        <h3>7.2 Monitoraggio Continuo</h3>
+        <p>Implementa (o richiedi di implementare) meccanismi di monitoraggio continuo:</p>
+        <ul>
+            <li>SIEM per correlazione eventi di sicurezza</li>
+            <li>IDS/IPS per rilevamento intrusioni</li>
+            <li>EDR/XDR sugli endpoint</li>
+            <li>Monitoraggio integrità file critici</li>
+            <li>Alerting automatico per eventi anomali</li>
+            <li>Dashboard di sicurezza per management</li>
+        </ul>
+
+        <div class="page-break"></div>
+
+        <h2>8. GESTIONE DEGLI INCIDENTI - CHECKLIST OPERATIVA</h2>
+
+        <h3>8.1 In Caso di Incidente di Sicurezza</h3>
+
+        <div class="warning-box">
+            <strong>⚠️ DOCUMENTARE TUTTO FIN DAL PRIMO MOMENTO</strong><br>
+            La documentazione inizia dalla scoperta dell'incidente. Ogni azione, decisione, comunicazione deve essere tracciata.
+        </div>
+
+        <p><strong>Checklist immediata:</strong></p>
+        <ol>
+            <li><strong>Rilevazione e Valutazione Iniziale</strong>
+                <ul>
+                    <li>Registra data/ora di rilevazione e come è stato scoperto</li>
+                    <li>Valutazione preliminare di impatto e severità</li>
+                    <li>Identificazione asset coinvolti</li>
+                </ul>
+            </li>
+            <li><strong>Contenimento</strong>
+                <ul>
+                    <li>Azioni immediate di contenimento documentate</li>
+                    <li>Se risorse insufficienti per contenimento efficace: documentalo</li>
+                    <li>Se necessario supporto esterno: richiedilo formalmente</li>
+                </ul>
+            </li>
+            <li><strong>Comunicazioni</strong>
+                <ul>
+                    <li>Notifica immediata alla Direzione (email/telefono + conferma scritta)</li>
+                    <li>Attivazione team di gestione incidente</li>
+                    <li>Valutazione obblighi di notifica a CSIRT Italia e ACN</li>
+                    <li>Coordinamento con DPO se coinvolti dati personali</li>
+                </ul>
+            </li>
+            <li><strong>Eradicazione e Recupero</strong>
+                <ul>
+                    <li>Piano di eradicazione documentato</li>
+                    <li>Verifiche di sicurezza pre-ripristino</li>
+                    <li>Ripristino servizi con monitoraggio intensivo</li>
+                </ul>
+            </li>
+            <li><strong>Post-Incident</strong>
+                <ul>
+                    <li>Report dettagliato dell'incidente</li>
+                    <li>Lezioni apprese</li>
+                    <li>Raccomandazioni per prevenire ricorrenze</li>
+                    <li>Verifica implementazione raccomandazioni</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3>8.2 Obblighi di Notifica NIS2</h3>
+        <p><strong>Tempistiche da rispettare:</strong></p>
+        <ul>
+            <li><strong>Notifica Precoce:</strong> Entro 24 ore dalla conoscenza dell'incidente significativo</li>
+            <li><strong>Notifica di Incidente:</strong> Entro 72 ore con maggiori dettagli</li>
+            <li><strong>Relazione Finale:</strong> Entro 1 mese con analisi completa</li>
+        </ul>
+
+        <div class="important-box">
+            <strong>DOCUMENTA SEMPRE:</strong>
+            <ul>
+                <li>Quando hai avuto conoscenza dell'incidente</li>
+                <li>Quando hai notificato la Direzione</li>
+                <li>Se ci sono stati ritardi e perché</li>
+                <li>Tutte le comunicazioni con CSIRT Italia/ACN</li>
+                <li>Eventuali impedimenti nella gestione dell'incidente</li>
+            </ul>
+        </div>
+
+        <h2>9. COORDINAMENTO CON ORGANI ESTERNI</h2>
+
+        <h3>9.1 Rapporti con CSIRT Italia</h3>
+        <ul>
+            <li>Registrazione come punto di contatto</li>
+            <li>Notifiche di incidenti secondo procedure</li>
+            
